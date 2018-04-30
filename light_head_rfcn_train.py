@@ -48,7 +48,7 @@ tf.app.flags.DEFINE_float(
     'gpu_memory_fraction', 1., 'GPU memory fraction to use.')
 # scaffold related configuration
 tf.app.flags.DEFINE_string(
-    'data_dir', '../PASCAL/VOC_TF/VOC0712TF/',
+    'data_dir', 'PASCAL/VOC_TF/VOC0712TF/',
     'The directory where the dataset input data is stored.')
 tf.app.flags.DEFINE_string(
     'dataset_name', 'pascalvoc_0712', 'The name of the dataset to load.')

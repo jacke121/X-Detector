@@ -206,10 +206,12 @@ def run(dataset_dir, output_dir, name='voc_train', shuffling=False):
     print('\nFinished converting the Pascal VOC dataset!')
 
 if __name__ == '__main__':
-
-    split_name = 'train' # 'train' or 'test'
-    output_name = 'voc_2012_{}'.format(split_name)
-    dataset_dir = '../PASCAL/VOC/VOC2012'
-    output_dir = '../PASCAL/VOC/VOC2012TF'
-
+    # split_name = 'train' # 'train' or 'test'
+    # output_name = 'voc_2012_{}'.format(split_name)
+    # dataset_dir = '../PASCAL/VOC/VOC2012'
+    # output_dir = '../PASCAL/VOC/VOC2012TF'
+    split_name = 'test' # 'train' or 'test'
+    output_name = 'voc_2007_{}'.format(split_name)
+    dataset_dir = '/media/lbg/Windows10/data/pascal_voc/VOCdevkit/VOC2007'
+    output_dir = '../PASCAL/VOC_TF/VOC2007TF'
     run(dataset_dir, output_dir, output_name)

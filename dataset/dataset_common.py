@@ -20,7 +20,7 @@ import tensorflow as tf
 
 from tensorflow.python.framework import sparse_tensor
 
-from . import dataset_utils
+from dataset import dataset_utils
 
 slim = tf.contrib.slim
 

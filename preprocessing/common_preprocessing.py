@@ -18,7 +18,7 @@ from enum import Enum, IntEnum
 import numpy as np
 
 import tensorflow as tf
-import tf_extended as tfe
+# import tf_extended as tfe
 
 from tensorflow.python.ops import control_flow_ops
 
