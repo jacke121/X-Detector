@@ -19,6 +19,7 @@ from __future__ import print_function
 import os
 import sys
 
+import cv2
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python import debug as tf_debug
@@ -79,7 +80,7 @@ tf.app.flags.DEFINE_float(
     'rpn_nms_thres', 0.7, 'nms threshold for rpn.')
 # checkpoint related configuration
 tf.app.flags.DEFINE_string(
-    'checkpoint_path', '/media/rs/7A0EE8880EE83EAF/Detections/DetInDet_Tensorflow/logs_light/model.ckpt-122320',#None,
+    'checkpoint_path', './model/model.ckpt-122320',#None,
     'The path of the checkpoint used to test new images.')
 tf.app.flags.DEFINE_string(
     'model_scope', 'xception_lighthead',
@@ -190,12 +191,21 @@ def main(_):
             sess.run(init)
 
             saver.restore(sess, FLAGS.checkpoint_path)
+            filepath="demo"
+            files = os.listdir(filepath)
+            import datetime
+            for fi in files:
+                fi_d = os.path.join(filepath, fi)
+                # print(os.path.join('src/mavlink/message/', fi_d))
 
-            np_image = imread('./demo/test.jpg')
-            labels_, scores_, bboxes_ = sess.run([all_labels, all_scores, all_bboxes], feed_dict = {image_input : np_image, shape_input : np_image.shape[:-1]})
-
-            img_to_draw = draw_toolbox.bboxes_draw_on_img(np_image, labels_, scores_, bboxes_, thickness=2)
-            imsave(os.path.join(FLAGS.debug_dir, 'test_out.jpg'), img_to_draw)
+                np_image = imread(fi_d)
+                old=datetime.datetime.now()
+                labels_, scores_, bboxes_ = sess.run([all_labels, all_scores, all_bboxes], feed_dict = {image_input : np_image, shape_input : np_image.shape[:-1]})
+                print("resers",(datetime.datetime.now()-old).microseconds)
+                img_to_draw = draw_toolbox.bboxes_draw_on_img(np_image, labels_, scores_, bboxes_, thickness=2)
+                cv2.imshow("asdf",img_to_draw)
+                cv2.waitKey()
+                imsave(os.path.join(FLAGS.debug_dir, 'test_out.jpg'), img_to_draw)
 
 if __name__ == '__main__':
   tf.logging.set_verbosity(tf.logging.INFO)

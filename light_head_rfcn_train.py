@@ -48,7 +48,7 @@ tf.app.flags.DEFINE_float(
     'gpu_memory_fraction', 1., 'GPU memory fraction to use.')
 # scaffold related configuration
 tf.app.flags.DEFINE_string(
-    'data_dir', 'PASCAL/VOC_TF/VOC0712TF/',
+    'data_dir', 'PASCAL/VOC_TF/VOC2007TF/',
     'The directory where the dataset input data is stored.')
 tf.app.flags.DEFINE_string(
     'dataset_name', 'pascalvoc_0712', 'The name of the dataset to load.')
@@ -164,7 +164,7 @@ tf.app.flags.DEFINE_boolean(
     'run_on_cloud', True,
     'Wether we will train on cloud (pre-trained model will be placed in the "data_dir/cloud_checkpoint_path").')
 tf.app.flags.DEFINE_string(
-    'cloud_checkpoint_path', 'xception_model/xception_model.ckpt',
+    'cloud_checkpoint_path', 'xception/xception_model.ckpt',
     'The path to a checkpoint from which to fine-tune.')
 #CUDA_VISIBLE_DEVICES
 FLAGS = tf.app.flags.FLAGS

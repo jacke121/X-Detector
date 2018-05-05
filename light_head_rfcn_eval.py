@@ -60,7 +60,7 @@ tf.app.flags.DEFINE_integer(
 tf.app.flags.DEFINE_string(
     'dataset_split_name', 'test', 'The name of the train/test split.')
 tf.app.flags.DEFINE_string(
-    'model_dir', './logs_light/',
+    'model_dir', './model/xception',
     'The directory where the model will be stored.')
 tf.app.flags.DEFINE_string(
     'debug_dir', './Debug_light/',

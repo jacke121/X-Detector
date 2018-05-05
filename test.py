@@ -231,20 +231,6 @@ print(sess.run(gt_bboxes1 * tf.expand_dims(gt_bboxes2,0)))
 # sess = tf.Session()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # print(sess.run(tf.constant([[1,2,3,4,5],[5,6,7,8,9]])[:, -2:]))
 
 # print(np.mgrid[0 : 5, 0 : 5])
