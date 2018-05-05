@@ -13,10 +13,10 @@ import xml.dom.minidom as minidom
 import numpy as np
 import scipy.sparse
 import scipy.io as sio
-import utils.cython_bbox
-import cPickle
+# import utils.cython_bbox
+import pickle
 import subprocess
-from fast_rcnn.config import cfg
+# from fast_rcnn.config import cfg
 import cv2
 import matplotlib.pyplot as plt
 import copy
@@ -37,7 +37,7 @@ class pascal_voc(datasets.imdb):
                          'motorbike', 'person', 'pottedplant',
                          'sheep', 'sofa', 'train', 'tvmonitor')
 
-        self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
+        self._class_to_ind = dict(zip(self.classes, range(self.num_classes)))
         self._image_ext = '.jpg'
         
         self._image_index = self._load_image_set_index()
@@ -98,7 +98,7 @@ class pascal_voc(datasets.imdb):
         """
         gt_roidb = [self._load_pascal_annotation(index) for index in self._image_index]
         
-        for i in xrange(len(self._image_index)):
+        for i in range(len(self._image_index)):
             gt_roidb[i]['image'] = self.image_path_at(i)
 
         return gt_roidb 
@@ -157,7 +157,7 @@ class pascal_voc(datasets.imdb):
         for cls_ind, cls in enumerate(self.classes):
             if cls == '__background__':
                 continue
-            print 'Writing {} VOC results file'.format(cls)
+            print('Writing {} VOC results file'.format(cls))
             filename = self._get_voc_results_file_template().format(cls)
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
@@ -165,7 +165,7 @@ class pascal_voc(datasets.imdb):
                     if dets == []:
                         continue
                     # the VOCdevkit expects 1-based indices
-                    for k in xrange(dets.shape[0]):
+                    for k in range(dets.shape[0]):
                         f.write('{:s} {:.3f} {:.1f} {:.1f} {:.1f} {:.1f}\n'.
                                 format(index, dets[k, -1],
                                        dets[k, 0] + 1, dets[k, 1] + 1,
@@ -207,7 +207,7 @@ class pascal_voc(datasets.imdb):
         aps = []
         # The PASCAL VOC metric changed in 2010
         use_07_metric = True if int(self._year) < 2010 else False
-        print 'VOC07 metric? ' + ('Yes' if use_07_metric else 'No')
+        print('VOC07 metric? ' + ('Yes' if use_07_metric else 'No'))
         if not os.path.isdir(output_dir):
             os.mkdir(output_dir)
         for i, cls in enumerate(self._classes):
@@ -220,7 +220,7 @@ class pascal_voc(datasets.imdb):
             aps += [ap]
             print('AP for {} = {:.4f}'.format(cls, ap))
             with open(os.path.join(output_dir, cls + '_pr.pkl'), 'w') as f:
-                cPickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
+                pickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
         print('Mean AP = {:.4f}'.format(np.mean(aps)))
         print('~~~~~~~~')
         print('Results:')

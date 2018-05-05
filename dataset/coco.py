@@ -13,7 +13,7 @@ import os
 import numpy as np
 import scipy.sparse
 import scipy.io as sio
-import cPickle
+import pickle
 import json
 import uuid
 # COCO API
@@ -40,7 +40,7 @@ class coco(datasets.imdb):
         self._COCO = COCO(self._get_ann_file())
         cats = self._COCO.loadCats(self._COCO.getCatIds())
         self._classes = tuple(['__background__'] + [c['name'] for c in cats])
-        self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
+        self._class_to_ind = dict(zip(self.classes, range(self.num_classes)))
         self._class_to_coco_cat_id = dict(zip([c['name'] for c in cats],
                                               self._COCO.getCatIds()))
         self._image_index = self._load_image_set_index()
@@ -113,7 +113,7 @@ class coco(datasets.imdb):
         num_has_instances = 0
         image_index = []
 
-        for i in xrange(len(self._image_index)):
+        for i in range(len(self._image_index)):
             has_boxes = gt_roidb0[i]['has_boxes']
             if has_boxes:
                 num_has_instances = num_has_instances + 1
@@ -121,17 +121,17 @@ class coco(datasets.imdb):
 
 
 
-        gt_roidb = [None for i in xrange(num_has_instances)]
+        gt_roidb = [None for i in range(num_has_instances)]
 
         j = 0
-        for i in xrange(len(self._image_index)):
+        for i in range(len(self._image_index)):
             has_boxes = gt_roidb0[i]['has_boxes']
             if has_boxes:
                 gt_roidb[j] = gt_roidb0[i]
                 j = j + 1
 
         self._image_index = image_index
-        for i in xrange(len(self._image_index)):
+        for i in range(len(self._image_index)):
             gt_roidb[i]['image'] = self.image_path_at(i)
 
 
@@ -239,16 +239,16 @@ class coco(datasets.imdb):
         ap_default = np.mean(precision[precision > -1])
         print ('~~~~ Mean and per-category AP @ IoU=[{:.2f},{:.2f}] '
                '~~~~').format(IoU_lo_thresh, IoU_hi_thresh)
-        print '{:.1f}'.format(100 * ap_default)
+        print('{:.1f}'.format(100 * ap_default))
         for cls_ind, cls in enumerate(self.classes):
             if cls == '__background__':
                 continue
             # minus 1 because of __background__
             precision = coco_eval.eval['precision'][ind_lo:(ind_hi + 1), :, cls_ind - 1, 0, 2]
             ap = np.mean(precision[precision > -1])
-            print '{:.1f}'.format(100 * ap)
+            print('{:.1f}'.format(100 * ap))
 
-        print '~~~~ Summary metrics ~~~~'
+        print('~~~~ Summary metrics ~~~~')
         coco_eval.summarize()
 
     def _do_detection_eval(self, res_file, output_dir):
@@ -261,8 +261,8 @@ class coco(datasets.imdb):
         self._print_detection_eval_metrics(coco_eval)
         eval_file = osp.join(output_dir, 'detection_results.pkl')
         with open(eval_file, 'wb') as fid:
-            cPickle.dump(coco_eval, fid, cPickle.HIGHEST_PROTOCOL)
-        print 'Wrote COCO eval results to: {}'.format(eval_file)
+            pickle.dump(coco_eval, fid, pickle.HIGHEST_PROTOCOL)
+        print('Wrote COCO eval results to: {}'.format(eval_file))
 
     def _coco_results_one_category(self, boxes, cat_id):
         results = []
@@ -279,7 +279,7 @@ class coco(datasets.imdb):
               [{'image_id' : index,
                 'category_id' : cat_id,
                 'bbox' : [xs[k], ys[k], ws[k], hs[k]],
-                'score' : scores[k]} for k in xrange(dets.shape[0])])
+                'score' : scores[k]} for k in range(dets.shape[0])])
         return results
 
     def _write_coco_results_file(self, all_boxes, res_file):
@@ -291,12 +291,12 @@ class coco(datasets.imdb):
         for cls_ind, cls in enumerate(self.classes):
             if cls == '__background__':
                 continue
-            print 'Collecting {} results ({:d}/{:d})'.format(cls, cls_ind,
-                                                          self.num_classes - 1)
+            print('Collecting {} results ({:d}/{:d})'.format(cls, cls_ind,
+                                                             self.num_classes - 1))
             coco_cat_id = self._class_to_coco_cat_id[cls]
             results.extend(self._coco_results_one_category(all_boxes[cls_ind],
                                                            coco_cat_id))
-        print 'Writing results json to {}'.format(res_file)
+        print('Writing results json to {}'.format(res_file))
         with open(res_file, 'w') as fid:
             json.dump(results, fid)
 
