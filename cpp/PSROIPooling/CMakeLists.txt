@@ -53,6 +53,7 @@ MESSAGE(STATUS "Found TF_LIB: " ${TF_LIB})
 
 INCLUDE_DIRECTORIES(${TF_INC})
 INCLUDE_DIRECTORIES(${TF_INC})
+INCLUDE_DIRECTORIES("/usr/local/cuda-9.0")
 INCLUDE_DIRECTORIES(${TF_INC}/external/nsync/public)
 LINK_DIRECTORIES(${TF_LIB})
 
@@ -91,7 +92,7 @@ ADD_LIBRARY(ps_roi_align SHARED
 TARGET_LINK_LIBRARIES(ps_roi_align tensorflow_framework ${CUDA_LIBRARIES})
 
 
- #nvcc -std=c++11 -c -o cuda_op_kernel.cu.o ../focal_loss_op.cu -I $TF_INC -I$TF_INC/external/nsync/public -D GOOGLE_CUDA=1 -x cu -Xcompiler -fPIC -I/usr/local/ -I$TF_INC/tensorflow/stream_executor/cuda --expt-relaxed-constexpr -gencode arch=compute_61,code=sm_61
+ #nvcc -std=c++11 -c -o cuda_op_kernel.cu.o ../focal_loss_op.cu -I "/usr/local/cuda-9.0" -I $TF_INC -I$TF_INC/external/nsync/public -D GOOGLE_CUDA=1 -x cu -Xcompiler -fPIC -I/usr/local/ -I$TF_INC/tensorflow/stream_executor/cuda --expt-relaxed-constexpr -gencode arch=compute_61,code=sm_61
 
 
 #TF_INC=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_include())')
