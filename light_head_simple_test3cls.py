@@ -38,10 +38,9 @@ from preprocessing import preprocessing_factory
 from preprocessing import anchor_manipulator
 from preprocessing import common_preprocessing
 
-
 # scaffold related configuration
 tf.app.flags.DEFINE_integer(
-    'num_classes', 21, 'Number of classes to use in the dataset.')
+    'num_classes', 3, 'Number of classes to use in the dataset.')
 tf.app.flags.DEFINE_string(
     'debug_dir', './debug/',
     'The directory where the debug files will be stored.')
@@ -81,7 +80,9 @@ tf.app.flags.DEFINE_float(
     'rpn_nms_thres', 0.7, 'nms threshold for rpn.')
 # checkpoint related configuration
 tf.app.flags.DEFINE_string(
-    'checkpoint_path', './model/model.ckpt-122320',#None,
+    # 'checkpoint_path', './model/model.ckpt-122320',#None,
+    'checkpoint_path', './logs_light/model.ckpt-618867',
+
     'The path of the checkpoint used to test new images.')
 tf.app.flags.DEFINE_string(
     'model_scope', 'xception_lighthead',
@@ -192,7 +193,8 @@ def main(_):
             sess.run(init)
 
             saver.restore(sess, FLAGS.checkpoint_path)
-            filepath="demo"
+            # filepath="/home/sbd/data/train/VOC2007/JPEGImages"
+            filepath = "demo"
             files = os.listdir(filepath)
             import datetime
             for fi in files:

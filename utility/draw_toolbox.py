@@ -91,7 +91,7 @@ def bboxes_draw_on_img(img, classes, scores, bboxes, thickness=2):
 
         cv2.rectangle(img, p1[::-1], p2[::-1], color, thickness)
         # Draw text...
-        s = '%s/%.1f%%' % (label2name_table[classes[i]], scores[i]*100)
+        s = '%s/%.1f%%' % (label2name_table.get(classes[i], 'no label'), scores[i]*100)
         # text_size is (width, height)
         text_size, baseline = cv2.getTextSize(s, cv2.FONT_HERSHEY_SIMPLEX, scale, text_thickness)
         p1 = (p1[0] - text_size[1], p1[1])
